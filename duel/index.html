@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A1220">
+<title>DartUp – Fernduell</title>
+<meta name="description" content="Du wurdest zu einem Darts-Duell in DartUp herausgefordert.">
+<link rel="icon" href="/dartup/favicon.png">
+<link rel="apple-touch-icon" href="/dartup/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/dartup/style.css">
+</head>
+<body>
+<main>
+<a class="brand" href="/dartup/"><img src="/dartup/logo.png" alt=""><b>Dart<span>Up</span></b></a>
+<div id="duel">
+<p class="kicker" style="margin-top:32px">Fernduell</p>
+<h1 id="title">Du wurdest herausgefordert</h1>
+<p id="desc">Öffne die Einladung in DartUp, spiel dasselbe Spiel an deinem Board und schick dein Ergebnis zurück.</p>
+<div class="card" id="detail" hidden>
+<div class="kicker" id="game"></div>
+<div class="big" id="score"></div>
+<div class="muted" id="who"></div>
+</div>
+<a class="btn" id="open" href="#">In DartUp öffnen</a>
+<a class="btn secondary" id="store" href="/dartup/">DartUp noch nicht installiert?</a>
+<button class="btn secondary" id="copy" type="button">Code kopieren</button>
+<p class="muted" id="hint" style="margin-top:16px">Öffnet sich die App nicht? Kopiere den Code und tippe in DartUp unter <b>Spielen → Fernduell</b> auf „Code einfügen".</p>
+</div>
+<div id="bad" hidden>
+<h1>Kein gültiger Duell-Link</h1>
+<p>Der Link ist unvollständig. Bitte deinen Gegner, ihn noch einmal zu schicken.</p>
+</div>
+<script>
+// Reads the duel code from the link, shows who challenged whom, and hands it to the app.
+// Everything stays in this page: nothing is sent anywhere.
+(function () {
+  var params = new URLSearchParams(location.search);
+  var raw = params.get('d') || '';
+  var m = /^DU1-([A-Za-z0-9_-]{4,1500})$/.exec(raw);
+  if (!m) { document.getElementById('duel').hidden = true; document.getElementById('bad').hidden = false; return; }
+  var code = raw;
+  var app = 'oche://duel?d=' + code;
+  document.getElementById('open').href = app;
+  function text(id, value) { document.getElementById(id).textContent = value; }
+  try {
+    var b64 = m[1].replace(/-/g, '+').replace(/_/g, '/');
+    b64 += '='.repeat((4 - (b64.length % 4)) % 4);
+    var json = decodeURIComponent(Array.prototype.map.call(atob(b64), function (c) {
+      return '%' + c.charCodeAt(0).toString(16).padStart(2, '0');
+    }).join(''));
+    var p = JSON.parse(json);
+    var a = p.a || {}, b = p.b;
+    var name = String(a.n || '').slice(0, 24);
+    var game = p.k === 'x' && Array.isArray(p.x)
+      ? p.x[0] + ' · ' + (p.x[2] === 'double' ? 'Double Out' : p.x[2] === 'master' ? 'Master Out' : 'Straight Out') + ' · ' + p.x[3] + (p.x[3] === 1 ? ' Leg' : ' Legs')
+      : 'Trainingsspiel';
+    var res = function (r) {
+      return p.k === 'x' ? r.s + ' Darts · Ø ' + String(r.g).replace('.', ',') : String(r.s);
+    };
+    document.getElementById('detail').hidden = false;
+    text('game', game);
+    if (p.t === 'r' && b) {
+      text('title', String(b.n || '').slice(0, 24) + ' hat geantwortet');
+      text('desc', 'Öffne die Antwort in DartUp, um zu sehen, wer gewonnen hat.');
+      text('score', res(b));
+      text('who', String(b.n || '').slice(0, 24) + ' – dein Ergebnis: ' + res(a));
+    } else {
+      text('title', name + ' fordert dich heraus');
+      text('score', res(a));
+      text('who', 'Das musst du schlagen');
+    }
+  } catch (e) { /* The app checks the code anyway; the page just shows less. */ }
+  document.getElementById('copy').addEventListener('click', function () {
+    var done = function () { text('copy', 'Kopiert ✓'); };
+    if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, function () {});
+  });
+  // Try the app straight away; if it is not installed, the page simply stays.
+  setTimeout(function () { location.href = app; }, 400);
+})();
+</script>
+<footer><a href="/dartup/">Start</a><a href="/dartup/support/">Support</a><a href="/dartup/privacy/">Datenschutz</a></footer>
+</main></body></html>
