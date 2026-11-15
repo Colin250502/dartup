@@ -54,10 +54,15 @@
     var a = p.a || {}, b = p.b;
     var name = String(a.n || '').slice(0, 24);
     var game = p.k === 'x' && Array.isArray(p.x)
-      ? p.x[0] + ' · ' + (p.x[2] === 'double' ? 'Double Out' : p.x[2] === 'master' ? 'Master Out' : 'Straight Out') + ' · ' + p.x[3] + (p.x[3] === 1 ? ' Leg' : ' Legs')
-      : 'Trainingsspiel';
+      ? p.x[0] + ' · ' + (p.x[2] === 'double' ? 'Double Out' : p.x[2] === 'master' ? 'Master Out' : 'Straight Out') + ' · ' + p.x[3] + (p.x[3] === 1 ? ' Leg' : ' Legs') +
+        (typeof p.v === 'number' ? ' · gegen den Computer (Ø ' + p.v + ')' : '')
+      : p.k === 'c' ? 'Cricket' : 'Trainingsspiel';
+    var comma = function (v) { return String(v).replace('.', ','); };
     var res = function (r) {
-      return p.k === 'x' ? r.s + ' Darts · Ø ' + String(r.g).replace('.', ',') : String(r.s);
+      if (p.k === 'x' && typeof p.v === 'number') return r.s + (r.s === 1 ? ' Leg' : ' Legs') + ' · Ø ' + comma(r.g);
+      if (p.k === 'x') return r.s + ' Darts · Ø ' + comma(r.g);
+      if (p.k === 'c') return r.s + ' Darts · ' + comma(r.g) + ' MPR';
+      return String(r.s);
     };
     document.getElementById('detail').hidden = false;
     text('game', game);
