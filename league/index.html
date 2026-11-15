@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0A1220">
+<title>DartUp – Private Liga</title>
+<meta name="description" content="Du wurdest in eine private Darts-Liga in DartUp eingeladen.">
+<link rel="icon" href="/dartup/favicon.png">
+<link rel="apple-touch-icon" href="/dartup/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/dartup/style.css">
+</head>
+<body>
+<main>
+<a class="brand" href="/dartup/"><img src="/dartup/logo.png" alt=""><b>Dart<span>Up</span></b></a>
+<div id="invite">
+<p class="kicker" style="margin-top:32px">Private Liga</p>
+<h1>Du bist eingeladen</h1>
+<p>Tritt der Liga in DartUp bei. Tabelle und Spielplan teilt ihr über iCloud – ohne Konto, ohne Werbung.</p>
+<a class="btn" id="open" href="#">In DartUp beitreten</a>
+<a class="btn secondary" id="store" href="/dartup/">DartUp noch nicht installiert?</a>
+<button class="btn secondary" id="copy" type="button">Einladung kopieren</button>
+<p class="muted" style="margin-top:16px">Öffnet sich die App nicht? Kopiere die Einladung und tippe in DartUp unter <b>Spielen → Private Liga</b> auf „Einladung einfügen".</p>
+</div>
+<div id="bad" hidden>
+<h1>Keine gültige Einladung</h1>
+<p>Der Link ist unvollständig. Bitte um eine neue Einladung.</p>
+</div>
+<script>
+// Hands the iCloud invitation inside the link to the app. Nothing is sent anywhere.
+(function () {
+  var u = new URLSearchParams(location.search).get('u') || '';
+  if (!/^https:\/\/www\.icloud\.com\/share\/[A-Za-z0-9_#=-]+$/.test(u)) {
+    document.getElementById('invite').hidden = true; document.getElementById('bad').hidden = false; return;
+  }
+  var app = 'oche://private/join?u=' + encodeURIComponent(u);
+  document.getElementById('open').href = app;
+  document.getElementById('copy').addEventListener('click', function () {
+    var done = function () { document.getElementById('copy').textContent = 'Kopiert ✓'; };
+    if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done, function () {});
+  });
+  setTimeout(function () { location.href = app; }, 400);
+})();
+</script>
+<footer><a href="/dartup/">Start</a><a href="/dartup/support/">Support</a><a href="/dartup/privacy/">Datenschutz</a></footer>
+</main></body></html>
