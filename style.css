@@ -1,35 +1,35 @@
 :root {
-  --bg: #0a1220; --card: #122034; --line: #24384f; --text: #f1f5f9; --dim: #a5b4c6; --mute: #687b92;
+  --bg: #111111; --card: #1b1a18; --line: #36322c; --text: #f5f1e8; --dim: #b5ad9e; --mute: #7d766a; --cream: #efe4cb;
   --accent: #8ee04b; --accent2: #3fc35a; --gold: #f7c548; --on-accent: #08200f;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text); }
 body {
-  font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  background: radial-gradient(ellipse at top, #16324a 0%, var(--bg) 60%) no-repeat, var(--bg);
+  font: 16px/1.55 "Kanit", -apple-system, system-ui, sans-serif;
+  background: radial-gradient(ellipse at top, #22201c 0%, var(--bg) 60%) no-repeat, var(--bg);
   min-height: 100vh;
 }
 main { max-width: 640px; margin: 0 auto; padding: 32px 16px 64px; }
 a { color: var(--accent); }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
 .brand img { width: 40px; height: 40px; }
-.brand b { font: 700 28px/1 "Barlow Condensed", system-ui, sans-serif; letter-spacing: .2px; }
+.brand b { font: italic 800 28px/1 "Kanit", system-ui, sans-serif; }
 .brand b span { color: var(--accent); }
-h1, h2, .num { font-family: "Barlow Condensed", system-ui, sans-serif; font-weight: 700; letter-spacing: .2px; }
+h1, h2, .num { font-family: "Kanit", system-ui, sans-serif; font-style: italic; font-weight: 800; color: var(--cream); }
 h1 { font-size: 44px; line-height: 1.05; margin: 28px 0 8px; }
 h2 { font-size: 26px; margin: 32px 0 8px; }
 p, li { color: var(--dim); }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 20px; margin-top: 20px; }
 .btn {
   display: block; width: 100%; text-align: center; text-decoration: none; cursor: pointer;
-  font: 700 20px/1 "Barlow Condensed", system-ui, sans-serif; letter-spacing: .3px;
+  font: italic 700 20px/1 "Kanit", system-ui, sans-serif;
   padding: 17px 20px; border-radius: 14px; border: 0; margin-top: 12px;
   background: linear-gradient(135deg, #b4f03c, #3fc35a); color: var(--on-accent);
 }
 .btn.secondary { background: transparent; color: var(--text); border: 1px solid var(--line); }
-.kicker { font: 600 13px/1 "Barlow Condensed", system-ui, sans-serif; letter-spacing: 1.3px; text-transform: uppercase; color: var(--accent); }
-.big { font: 700 44px/1.05 "Barlow Condensed", system-ui, sans-serif; margin: 10px 0 4px; }
+.kicker { font: italic 700 15px/1.2 "Kanit", system-ui, sans-serif; color: var(--accent); }
+.big { font: italic 800 44px/1.1 "Kanit", system-ui, sans-serif; color: var(--cream); margin: 10px 0 4px; }
 .muted { color: var(--mute); font-size: 14px; }
 .features { list-style: none; padding: 0; margin: 0; }
 .features li { padding: 10px 0; border-bottom: 1px solid var(--line); }
